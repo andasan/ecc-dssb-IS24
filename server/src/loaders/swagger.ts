@@ -1,6 +1,9 @@
+import path from 'path';
 import express from 'express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
+import config from '@/config';
 
 const swaggerDefinition = {
     openapi: '3.0.0',
@@ -15,7 +18,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://localhost:3000',
+            url: 'http://localhost:3000/api',
             description: 'Development server',
         },
     ],
@@ -29,5 +32,5 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 export default ({ app }: { app: express.Application }) => {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use(path.join(config.api.prefix, 'api-docs'), swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };

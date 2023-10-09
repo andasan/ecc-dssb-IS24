@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
@@ -10,8 +11,8 @@ export default ({ app, products }: { app: express.Application, products: IProduc
     /**
      * Health Check endpoints
      */
-    app.get('/status', (req, res) => {
-        res.status(200).end();
+    app.get(path.join(config.api.prefix, 'status'), (req, res) => {
+        res.status(200).json({ status: 'OK' });
     });
 
     // Enable Cross Origin Resource Sharing to front-end server
