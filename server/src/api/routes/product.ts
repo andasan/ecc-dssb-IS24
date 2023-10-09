@@ -6,6 +6,17 @@ const productRoute = Router();
 export default (app: Router, { products }: { products: IProduct[] }) => {
     app.use('/products', productRoute);
 
+    /**
+     * @swagger
+     * /api/products:
+     *   get:
+     *      description: Use to request all products
+     *      responses:
+     *          '200':
+     *              description: A successful response
+     *          '400':
+     *              description: Bad request
+     */
     productRoute.get(
         '/',
         async (req: Request, res: Response, next: NextFunction) => {
@@ -17,6 +28,24 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
         },
     );
 
+    /**
+     * @swagger
+     * /api/products/{productId}:
+     *   get:
+     *     summary: Get a product by ID
+     *     parameters:
+     *       - in: path
+     *         name: productId
+     *         required: true
+     *         description: ID of the product to retrieve
+     *         schema:
+     *           type: string
+     *     responses:
+     *         '200':
+     *             description: A successful response
+     *         '400':
+     *             description: Bad request
+     */
     productRoute.get(
         '/:id',
         async (req: Request, res: Response, next: NextFunction) => {

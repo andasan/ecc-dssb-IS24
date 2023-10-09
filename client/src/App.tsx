@@ -1,17 +1,17 @@
-import * as React from "react"
+import React from "react"
 import { z } from "zod"
 
 import { DataTable } from "@/components/module/data-table"
 import { columns } from "@/components/module/columns"
+
 import { Product, productSchema } from "@/data/schema"
+import { getProducts } from "./lib/api"
 
 function App() {
   const [products, setProducts] = React.useState<Product[]>([])
 
   React.useEffect(() => {
-    fetch("/api/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(z.array(productSchema).parse(data.products)))
+    getProducts().then((data) => setProducts(z.array(productSchema).parse(data)))
   }, [])
 
   return (
