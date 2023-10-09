@@ -1,33 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import * as React from "react"
+import { z } from "zod"
+
+import { DataTable } from "@/components/module/data-table"
+import { columns } from "@/components/module/columns"
+import { Product, productSchema } from "@/data/schema"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [products, setProducts] = React.useState<Product[]>([])
+
+  React.useEffect(() => {
+    fetch("/api/products")
+      .then((response) => response.json())
+      .then((data) => setProducts(z.array(productSchema).parse(data.products)))
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+        <div className="flex items-center justify-between space-y-2">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">List of ECC Products</h2>
+            <p className="text-muted-foreground">
+              Here&apos;s a list of all products that ECC currently develops or maintains.
+            </p>
+          </div>
+        </div>
+       <DataTable data={products} columns={columns} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
