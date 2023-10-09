@@ -1,9 +1,7 @@
-import axios from "axios"
-
-import config from "@/config"
+import path from "path";
+import fs from "fs/promises";
 
 export const locationData = async (): Promise<string[]> => {
-    // const repos = await axios.get(config.locationUrl, configx)
-    // return repos.data.map((repo: any) => repo.name).filter((name: string) => name);
-    return ["Tokyo", "Osaka", "Hokkaido"]
+    const data = await fs.readFile(path.join(process.cwd(), "src/data/locationData.json"));
+    return JSON.parse(data.toString()).locationData;
 }
