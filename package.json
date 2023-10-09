@@ -1,0 +1,22 @@
+{
+  "name": "ecc-dssb-is24-code-challenge",
+  "scripts": {
+    "client": "npm run dev --prefix ../client/",
+    "server": "npm run dev --prefix ../server/",
+    "clear:client": "cd client && rm -rf dist && rm -rf cache",
+    "clear:server": "cd server && rm -rf dist && rm -rf cache",
+    "clear": "npm run clear:client && npm run clear:server",
+    "setup:client": "cd client && npm install",
+    "setup:server": "cd server && npm install",
+    "setup": "npm install && npm run clear && npm run setup:client && npm run setup:server",
+    "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\"",
+    "repo:upstream": "git fetch upstream && git merge upstream/main"
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
+}
