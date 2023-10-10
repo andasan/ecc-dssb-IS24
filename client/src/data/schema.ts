@@ -4,7 +4,10 @@ export const productSchema = z.object({
   productId: z.number(),
   productName: z.string(),
   productOwnerName: z.string(),
-  developers: z.array(z.string()),
+  developers: z.array(z.object({
+    id: z.string(),
+    text: z.string()
+  })),
   scrumMasterName: z.string(),
   startDate: z.string(),
   methodology: z.enum(["Agile", "Waterfall"]),

@@ -1,6 +1,7 @@
 import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { v4 as uuid } from 'uuid';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -26,34 +27,68 @@ import { Tag, TagInput } from "@/components/ui/tag-input"
 import { productFormSchema, ProductFormSchemaType } from "@/data/schema"
 import { dialogClose, DialogFooter } from "@/components/ui/dialog"
 import { useCreateProduct } from "@/hooks/useCreateProduct"
+import { useUpdateProduct } from "@/hooks/useUpdateProduct";
 
-export function ProductForm() {
+interface ProductFormProps {
+    data?: any & { productId?: string }
+    editMode?: boolean
+    productId?: string
+}
+
+export function ProductForm({ data, editMode, productId }: ProductFormProps) { // Add productId parameter
     const createProductMutation = useCreateProduct();
+    const updateProductMutation = useUpdateProduct();
+
+    const editData = data as unknown as ProductFormSchemaType;
+    const defaultDevelopers = editData?.developers;
+
+    const defaultData = editMode ? ({
+        productName: editData?.productName ?? "",
+        productOwnerName: editData?.productOwnerName ?? "",
+        scrumMasterName: editData?.scrumMasterName ?? "",
+        developers: defaultDevelopers as unknown as [Tag, ...Tag[]] ?? [],
+        methodology: editData?.methodology ?? undefined,
+        location: editData?.location ?? "",
+    }) : ({
+        productName: "",
+        productOwnerName: "",
+        scrumMasterName: "",
+        developers: [],
+        methodology: undefined,
+        location: "",
+    });
 
     const form = useForm<ProductFormSchemaType>({
         resolver: zodResolver(productFormSchema),
-        defaultValues: {
-            productName: "",
-            productOwnerName: "",
-            scrumMasterName: "",
-            developers: [],
-            methodology: undefined,
-            location: "",
-        },
+        defaultValues: { ...defaultData },
     })
 
-    const [tags, setTags] = React.useState<Tag[]>([]);
+    const [tags, setTags] = React.useState<Tag[]>(editMode ? defaultDevelopers as unknown as Tag[] : []);
 
     const { setValue } = form;
 
     async function onSubmit(data: ProductFormSchemaType) {
-        await createProductMutation.mutateAsync(data, {
-            onSuccess: () => {
-                form.reset();
-                toast({ title: "Product Created", type: "foreground" });
-                dialogClose();
-            },
-        });
+        if (editMode) {
+            const updateProduct = {
+                id: productId,
+                product: { ...data }
+            }
+            await updateProductMutation.mutateAsync(updateProduct, {
+                onSuccess: () => {
+                    form.reset();
+                    toast({ title: "Product Updated", type: "foreground" });
+                    dialogClose();
+                },
+            });
+        } else {
+            await createProductMutation.mutateAsync(data, {
+                onSuccess: () => {
+                    form.reset();
+                    toast({ title: "Product Created", type: "foreground" });
+                    dialogClose();
+                },
+            });
+        }
     }
 
     return (

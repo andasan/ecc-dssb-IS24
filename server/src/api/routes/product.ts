@@ -153,13 +153,37 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
      *           schema:
      *             type: object
      *             properties:
-     *               product:
-     *                 type: object
-     *                 description: The updated product object
+     *               productName:
+     *                 type: string
+     *                 description: The name of the product
+     *               productOwnerName:
+     *                 type: string
+     *                 description: The name of the product owner
+     *               developers:
+     *                 type: array
+     *                 items:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                     text:
+     *                       type: string
+     *               scrumMasterName:
+     *                 type: string
+     *                 description: The name of the scrum master
+     *               methodology:
+     *                 type: string
+     *                 description: The methodology of the product
+     *               location:
+     *                 type: string
+     *                 description: The location of the product
      *             example:
-     *               product:
-     *                 name: Updated Product
-     *                 description: This is an updated product.
+     *                 productName: "Hoge Product"
+     *                 productOwnerName: "Hoge"
+     *                 developers: [{id: 1, text: "str1"}, {id: 2, text: "str2"}]
+     *                 scrumMasterName: "Hoge"
+     *                 methodology: "Agile"
+     *                 location: https://hoge.com
      *     responses:
      *       '200':
      *         description: Product updated successfully
@@ -173,9 +197,14 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
      *                   description: The updated product
      *             example:
      *               product:
-     *                 productId: 123
-     *                 name: Updated Product
-     *                 description: This is an updated product.
+     *                 productId: 0
+     *                 productName: "Hoge Product"
+     *                 productOwnerName: "Hoge"
+     *                 developers: ["str1", "str2"]
+     *                 scrumMasterName: "Hoge"
+     *                 startDate: "2023/10/10"
+     *                 methodology: "Agile"
+     *                 location: https://hoge.com.
      *       '404':
      *         description: Product not found
      *       '400':
@@ -187,12 +216,18 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
             try {
                 const id = parseInt(req.params.id);
                 const product = req.body.product;
+                console.log(product);
+
+
                 const index = products.findIndex(product => product.productId === id);
                 if (index === -1) {
                     return res.status(404).json({ message: 'Product not found' });
                 }
-                products[index] = product;
-                return res.status(200).json({ product });
+
+                const updatedProduct = { ...products[index], ...product };
+                products[index] = updatedProduct;
+
+                return res.status(200).json({ updatedProduct });
             } catch (err) {
                 next(err);
             }

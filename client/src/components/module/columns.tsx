@@ -59,10 +59,14 @@ export const columns: ColumnDef<Product>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Developers" />
         ),
-        cell: ({ row }) => <div>{row.getValue("developers")}</div>,
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
+        cell: ({ row }) => {
+            const developers = (row.getValue("developers") as { text: string }[]).map((dev) => dev.text).join(", ")
+            const developersAsArray = developers.split(",").join(", ")
+            return(
+                <div>{developersAsArray}</div>
+            )
         },
+        enableSorting: false,
     },
     {
         accessorKey: "scrumMasterName",

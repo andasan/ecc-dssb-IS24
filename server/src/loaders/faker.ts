@@ -7,7 +7,10 @@ import { IProduct } from '@/interfaces/product';
 let productId = 0
 
 function createRandomUser() {
-    return faker.person.firstName();
+    return {
+        text: faker.person.firstName(),
+        id: faker.string.uuid(),
+    };
 }
 
 export async function addNewProduct(product: IProduct): Promise<IProduct> {
@@ -15,7 +18,7 @@ export async function addNewProduct(product: IProduct): Promise<IProduct> {
         productId: productId++,
         productName: product.productName,
         productOwnerName: product.productOwnerName,
-        developers: product.developers.map((developer: any) => developer.text),
+        developers: product.developers,
         scrumMasterName: product.scrumMasterName,
         startDate: dayjs(faker.date.past()).format('YYYY/MM/DD'),
         methodology: product.methodology,

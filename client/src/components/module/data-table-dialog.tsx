@@ -9,12 +9,13 @@ import { ProductForm } from "@/components/module/forms/product-form"
 interface DataTableDialogProps<TData> {
     title: string
     description: string
-    data?: TData[]
+    data?: TData
 }
 
 export function DataTableDialog<TData>({
     title,
-    description
+    description,
+    data,
 }: DataTableDialogProps<TData>) {
     return (
         <DialogContent className="sm:max-w-[525px]">
@@ -24,7 +25,7 @@ export function DataTableDialog<TData>({
                     {description}
                 </DialogDescription>
             </DialogHeader>
-            <ProductForm />
+            <ProductForm data={data} editMode productId={ data ? (data as unknown as { productId?: string }).productId : undefined } />
         </DialogContent>
     )
 }

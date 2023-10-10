@@ -11,6 +11,7 @@ function App() {
       refetchOnWindowFocus: true,
     },
   });
+  console.log(data)
 
   if (isLoading) return <SkeletonElements />;
 
