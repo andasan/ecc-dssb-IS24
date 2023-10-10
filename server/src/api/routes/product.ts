@@ -1,16 +1,24 @@
 import { IProduct } from '@/interfaces/product';
+import { addNewProduct } from '@/loaders/faker';
 import { Router, Request, Response, NextFunction } from 'express';
 
 const productRoute = Router();
 
 export default (app: Router, { products }: { products: IProduct[] }) => {
+    /**
+     * @swagger
+     * tags:
+     *   name: Products
+     *   description: API endpoints for managing products
+     */
     app.use('/products', productRoute);
 
     /**
      * @swagger
-     * /api/products:
+     * /products:
      *   get:
-     *      description: Use to request all products
+     *      summary: Get all products
+     *      tags: [Products]
      *      responses:
      *          '200':
      *              description: A successful response
@@ -30,9 +38,10 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
 
     /**
      * @swagger
-     * /api/products/{productId}:
+     * /products/{productId}:
      *   get:
      *     summary: Get a product by ID
+     *     tags: [Products]
      *     parameters:
      *       - in: path
      *         name: productId
@@ -62,19 +71,116 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
         },
     );
 
+    /**
+     * @swagger
+     * /products:
+     *   post:
+     *     summary: Create a new product
+     *     tags: [Products]
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               product:
+     *                 type: object
+     *                 description: The product object to be created
+     *             example:
+     *               product:
+     *                 productName: "Hoge Product"
+     *                 productOwnerName: "Hoge"
+     *                 developers: [{id: 1, text: "str1"}, {id: 2, text: "str2"}]
+     *                 scrumMasterName: "Hoge"
+     *                 methodology: "Agile"
+     *                 location: https://hoge.com
+     *     responses:
+     *       '200':
+     *         description: Product created successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 newProduct:
+     *                   type: object
+     *                   description: The newly created product
+     *             example:
+     *               productId: 123
+     *               productName: "Hoge Product"
+     *               productOwnerName: "Hoge"
+     *               developers: ["str1", "str2"]
+     *               scrumMasterName: "Hoge"
+     *               startDate: "2023/10/10"
+     *               methodology: "Agile"
+     *               location: https://hoge.com.
+     *       '400':
+     *         description: Bad request
+     */
     productRoute.post(
         '/',
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const product = req.body.product;
-                products.push(product);
-                return res.status(200).json({ product });
+
+                const newProduct = await addNewProduct(product);
+
+                products.push(newProduct);
+
+                return res.status(200).json(newProduct);
             } catch (err) {
                 next(err);
             }
         },
     );
 
+    /**
+     * @swagger
+     * /products/{id}:
+     *   put:
+     *     summary: Update a product by ID
+     *     tags: [Products]
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         description: ID of the product to update
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *               product:
+     *                 type: object
+     *                 description: The updated product object
+     *             example:
+     *               product:
+     *                 name: Updated Product
+     *                 description: This is an updated product.
+     *     responses:
+     *       '200':
+     *         description: Product updated successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 product:
+     *                   type: object
+     *                   description: The updated product
+     *             example:
+     *               product:
+     *                 productId: 123
+     *                 name: Updated Product
+     *                 description: This is an updated product.
+     *       '404':
+     *         description: Product not found
+     *       '400':
+     *         description: Bad request
+     */
     productRoute.put(
         '/:id',
         async (req: Request, res: Response, next: NextFunction) => {
@@ -93,6 +199,33 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
         },
     );
 
+    /**
+   * @swagger
+   * /products/{id}:
+   *   delete:
+   *     summary: Delete a product by ID
+   *     tags: [Products]
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: ID of the product to delete
+   *     responses:
+   *       '200':
+   *         description: Product deleted successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   description: A confirmation message
+   *             example:
+   *               message: Product deleted
+   *       '404':
+   *         description: Product not found
+   */
     productRoute.delete(
         '/:id',
         async (req: Request, res: Response, next: NextFunction) => {

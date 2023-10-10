@@ -10,6 +10,19 @@ function createRandomUser() {
     return faker.person.firstName();
 }
 
+export async function addNewProduct(product: IProduct): Promise<IProduct> {
+    return {
+        productId: productId++,
+        productName: product.productName,
+        productOwnerName: product.productOwnerName,
+        developers: product.developers.map((developer: any) => developer.text),
+        scrumMasterName: product.scrumMasterName,
+        startDate: dayjs(faker.date.past()).format('YYYY/MM/DD'),
+        methodology: product.methodology,
+        location: product.location,
+    };
+}
+
 async function createRandomProduct(): Promise<IProduct> {
     return {
         productId: productId++,

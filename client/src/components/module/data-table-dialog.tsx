@@ -24,7 +24,6 @@ export function DataTableDialog<TData>({
                     {description}
                 </DialogDescription>
             </DialogHeader>
-
             <ProductForm />
         </DialogContent>
     )

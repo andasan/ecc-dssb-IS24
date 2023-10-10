@@ -23,25 +23,37 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { Tag, TagInput } from "@/components/ui/tag-input"
 
-import { productSchema, ProductFormSchemaType } from "@/data/schema"
-import { DialogFooter } from "@/components/ui/dialog"
+import { productFormSchema, ProductFormSchemaType } from "@/data/schema"
+import { dialogClose, DialogFooter } from "@/components/ui/dialog"
+import { useCreateProduct } from "@/hooks/useCreateProduct"
 
 export function ProductForm() {
+    const createProductMutation = useCreateProduct();
+
     const form = useForm<ProductFormSchemaType>({
-        resolver: zodResolver(productSchema),
+        resolver: zodResolver(productFormSchema),
+        defaultValues: {
+            productName: "",
+            productOwnerName: "",
+            scrumMasterName: "",
+            developers: [],
+            methodology: undefined,
+            location: "",
+        },
     })
 
     const [tags, setTags] = React.useState<Tag[]>([]);
 
-    function onSubmit(data: ProductFormSchemaType) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        })
+    const { setValue } = form;
+
+    async function onSubmit(data: ProductFormSchemaType) {
+        await createProductMutation.mutateAsync(data, {
+            onSuccess: () => {
+                form.reset();
+                toast({ title: "Product Created", type: "foreground" });
+                dialogClose();
+            },
+        });
     }
 
     return (
@@ -115,12 +127,15 @@ export function ProductForm() {
                                     className='sm:min-w-[450px]'
                                     setTags={(newTags) => {
                                         setTags(newTags);
-                                        form.setValue("developers", newTags as [Tag, ...Tag[]]);
+                                        setValue("developers", newTags as [Tag, ...Tag[]]);
                                     }}
+                                    maxTags={5}
+                                    showCount
+                                    placeholderWhenFull="You can only add up to 5 developers"
                                 />
                             </FormControl>
                             <FormDescription>
-                                Enter up to five developer names
+                                Enter up to five developer names, separated by commas.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -170,9 +185,9 @@ export function ProductForm() {
                     )}
                 />
 
-            <DialogFooter>
-                <Button type="submit">Submit</Button>
-            </DialogFooter>
+                <DialogFooter>
+                    <Button type="submit">Submit</Button>
+                </DialogFooter>
             </form>
         </Form>
     )

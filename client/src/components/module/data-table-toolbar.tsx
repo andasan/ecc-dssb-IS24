@@ -48,7 +48,6 @@ export function DataTableToolbar<TData>({
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
-        {/* number of rows */}
         <p className="font-bold">
           Showing {table.getRowModel().rows.length} results
         </p>

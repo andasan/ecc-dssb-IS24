@@ -1,18 +1,18 @@
-import React from "react"
-import { z } from "zod"
-
 import { DataTable } from "@/components/module/data-table"
 import { columns } from "@/components/module/columns"
+import { SkeletonElements } from "@/components/elements/skeleton";
 
-import { Product, productSchema } from "@/data/schema"
-import { getProducts } from "./lib/api"
+import { useProduct } from '@/hooks/useProduct';
 
 function App() {
-  const [products, setProducts] = React.useState<Product[]>([])
+  const { data, isLoading } = useProduct({
+    config: {
+      retry: 1,
+      refetchOnWindowFocus: true,
+    },
+  });
 
-  React.useEffect(() => {
-    getProducts().then((data) => setProducts(z.array(productSchema).parse(data)))
-  }, [])
+  if (isLoading) return <SkeletonElements />;
 
   return (
     <>
@@ -25,7 +25,7 @@ function App() {
             </p>
           </div>
         </div>
-       <DataTable data={products} columns={columns} />
+        <DataTable data={data!.products} columns={columns} />
       </div>
     </>
   )
