@@ -42,7 +42,7 @@ export const columns: ColumnDef<Product>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Product Name" />
         ),
-        cell: ({ row }) => <div className="max-w-[500px]">{row.getValue("productName")}</div>,
+        cell: ({ row }) => <div className="max-w-[500px] capitalize">{row.getValue("productName")}</div>,
     },
     {
         accessorKey: "productOwnerName",
