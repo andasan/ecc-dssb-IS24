@@ -216,8 +216,6 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
             try {
                 const id = parseInt(req.params.id);
                 const product = req.body.product;
-                console.log(product);
-
 
                 const index = products.findIndex(product => product.productId === id);
                 if (index === -1) {

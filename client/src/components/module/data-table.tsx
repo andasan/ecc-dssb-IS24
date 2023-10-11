@@ -1,7 +1,9 @@
 import * as React from "react"
 import {
+  Column,
   ColumnDef,
   ColumnFiltersState,
+  FilterMeta,
   SortingState,
   VisibilityState,
   flexRender,
@@ -9,9 +11,10 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-//   getPaginationRowModel,
+  //   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Table as TableType,
 } from "@tanstack/react-table"
 
 import {
@@ -25,6 +28,11 @@ import {
 
 // import { DataTablePagination } from "@/components/module/data-table-pagination"
 import { DataTableToolbar } from "@/components/module/data-table-toolbar"
+import { CustomFilter } from "@/components/elements/custom-filter"
+
+interface CustomFilterMeta extends FilterMeta {
+  filterComponent: (info: { column: Column<any, unknown>; table: TableType<any> }) => JSX.Element;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -71,20 +79,45 @@ export function DataTable<TData, TValue>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+              <React.Fragment key={headerGroup.id}>
+                <TableRow>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
+                          )
+                        }
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.column.getCanFilter() ? (
+                          <div className="py-4">
+                            {header.column.columnDef?.meta &&
+                              (header.column.columnDef?.meta as CustomFilterMeta).filterComponent ? (
+                              (header.column.columnDef?.meta as CustomFilterMeta).filterComponent({
+                                column: header.column,
+                                table
+                              })
+                            ) : (
+                              <CustomFilter column={header.column} table={table} />
+                            )}
+                          </div>
+                        ) : null}
+                      </TableHead>
+                    )
+                  }
+                  )}
+                </TableRow>
+              </React.Fragment>
             ))}
           </TableHeader>
           <TableBody>

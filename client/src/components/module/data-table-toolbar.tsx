@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { DataTableFacetedFilter } from "@/components/module/data-table-faceted-filter"
 import { DataTableViewOptions } from "@/components/module/data-table-view-options"
-import { DebouncedInput } from "@/components/module/data-table-debounced-input"
+import { DebouncedInput } from "@/components/elements/debounced-input"
 import { DataTableDialog } from "@/components/module/data-table-dialog"
 
 import { methodology } from "@/data/data"

@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Product } from "@/data/schema"
 import { DataTableColumnHeader } from "@/components/module/data-table-column-header"
 import { DataTableRowActions } from "@/components/module/data-table-row-actions"
+import { CustomFilter } from "@/components/elements/custom-filter"
 
 export const columns: ColumnDef<Product>[] = [
     {
@@ -34,6 +35,7 @@ export const columns: ColumnDef<Product>[] = [
             <DataTableColumnHeader column={column} title="Product ID" />
         ),
         cell: ({ row }) => <div className="w-[80px]">{row.getValue("productId")}</div>,
+        enableColumnFilter: false,
         enableSorting: true,
         enableHiding: false,
     },
@@ -43,6 +45,7 @@ export const columns: ColumnDef<Product>[] = [
             <DataTableColumnHeader column={column} title="Product Name" />
         ),
         cell: ({ row }) => <div className="max-w-[500px] capitalize">{row.getValue("productName")}</div>,
+        enableColumnFilter: false,
     },
     {
         accessorKey: "productOwnerName",
@@ -53,6 +56,7 @@ export const columns: ColumnDef<Product>[] = [
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id))
         },
+        enableColumnFilter: false,
     },
     {
         accessorKey: "developers",
@@ -66,6 +70,11 @@ export const columns: ColumnDef<Product>[] = [
                 <div>{developersAsArray}</div>
             )
         },
+        filterFn: (row, id, value) => {
+            const developersArray: Array<{id: string, text: string}> = row.getValue(id)
+            const developersNames = developersArray.map((dev) => dev.text)
+            return developersNames.includes(value)
+        },
         enableSorting: false,
     },
     {
@@ -74,9 +83,9 @@ export const columns: ColumnDef<Product>[] = [
             <DataTableColumnHeader column={column} title="Scrum Master" />
         ),
         cell: ({ row }) => <div>{row.getValue("scrumMasterName")}</div>,
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        },
+        meta: {
+          filterComponent: CustomFilter
+        }
     },
     {
         accessorKey: "startDate",
@@ -87,6 +96,7 @@ export const columns: ColumnDef<Product>[] = [
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id))
         },
+        enableColumnFilter: false,
     },
     {
         accessorKey: "methodology",
@@ -98,6 +108,7 @@ export const columns: ColumnDef<Product>[] = [
             const rowVal = row.getValue(id) as string
             return value.includes(rowVal.toLowerCase())
         },
+        enableColumnFilter: false,
         enableSorting: false,
     },
     {
@@ -105,10 +116,11 @@ export const columns: ColumnDef<Product>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Location" />
         ),
-        cell: ({ row }) => <div>{row.getValue("location")}</div>,
+        cell: ({ row }) => <div className="min-x-[443px] max-w-[445px]">{row.getValue("location")}</div>,
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id))
         },
+        enableColumnFilter: false,
     },
     {
         id: "actions",

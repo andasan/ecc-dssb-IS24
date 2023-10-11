@@ -11,7 +11,7 @@ async function seedLocation() {
     const locationData = `{ "locationData": ${JSON.stringify(locations)} }`
     fs.writeFile(path.join(process.cwd(), 'src/data/locationData.json'), locationData, (err) => {
         if (err) throw err;
-        console.log('Location Data has been saved!');
+        console.info('Location Data has been saved!');
     });
 }
 
