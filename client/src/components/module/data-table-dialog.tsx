@@ -10,12 +10,14 @@ interface DataTableDialogProps<TData> {
     title: string
     description: string
     data?: TData
+    editMode?: boolean
 }
 
 export function DataTableDialog<TData>({
     title,
     description,
     data,
+    editMode = false,
 }: DataTableDialogProps<TData>) {
     return (
         <DialogContent className="sm:max-w-[525px]">
@@ -25,7 +27,7 @@ export function DataTableDialog<TData>({
                     {description}
                 </DialogDescription>
             </DialogHeader>
-            <ProductForm data={data} editMode productId={ data ? (data as unknown as { productId?: string }).productId : undefined } />
+            <ProductForm data={data} editMode={editMode} productId={ data ? (data as unknown as { productId?: string }).productId : undefined } />
         </DialogContent>
     )
 }

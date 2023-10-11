@@ -57,6 +57,7 @@ export function DataTableRowActions<TData>({
           title="Edit Product"
           description={`Edit ${product.productName}. Click save when you're done.`}
           data={product}
+          editMode={true}
         />
       </Dialog>
       <AreYouSureDialog open={deleteDialogIsOpen} setIsOpen={setDeleteDialogIsOpen} productId={product.productId} />
