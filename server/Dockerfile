@@ -11,4 +11,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 EXPOSE 8080
+
+# Build your application before starting it
+RUN npm run build
+
+# Start your application
 CMD [ "npm", "start" ]

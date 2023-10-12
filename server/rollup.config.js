@@ -9,7 +9,7 @@ const config = [
             sourcemap: true,
         },
         external: ['axios', 'os', 'url'],
-        plugins: [typescript({ module: 'CommonJS' })],
+        plugins: [typescript()],
     }
 ];
 module.exports = config;

@@ -18,7 +18,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://localhost:3000/api',
+            url: `${config.clientUrl}${config.api.prefix}`,
             description: 'Development server',
         },
     ],
