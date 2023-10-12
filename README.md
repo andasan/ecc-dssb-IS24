@@ -222,6 +222,6 @@ The ECC Product Catalog is designed to help the Province of BC manage and track 
 
 For any questions or issues, please contact Francois at francp0519@gmail.com.
 
-[GitHub Repository Link](#)
+[GitHub Repository Link](https://github.com/andasan/francois-polo-ecc-dssb-IS24-code-challenge)
 
 <small>[🔼 Back to top](#table-of-contents)</small>
