@@ -143,6 +143,25 @@ npm run dev
 ```
 4. Access the frontend web application at http://localhost:3000.
 
+#### Server Environment Variables
+Before running the backend API, make sure to set the following environment variables in a `.env` file for the server (located in the `server/` directory):
+```
+cp server/.env-sample server/.env
+```
+
+- `PORT`: The port on which the server should listen.
+- `CLIENT_URL`: The URL of the frontend application.
+- `LOCATION_URL`: The URL for BC government repositories.
+
+#### Client Environment Variables
+For the frontend web application, set the following environment variable in a `.env` file for the client (located in the `client/` directory):
+```
+cp client/.env-sample client/.env
+```
+
+- `VITE_API_URL`: The backend API endpoint URL for making requests from the client.
+
+
 ### Using Docker
 To run the project with Docker, follow these steps:
 
