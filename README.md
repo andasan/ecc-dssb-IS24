@@ -151,7 +151,7 @@ cp server/.env-sample server/.env
 
 - `PORT`: The port on which the server should listen.
 - `CLIENT_URL`: The URL of the frontend application.
-- `LOCATION_URL`: The URL for BC government repositories.
+- `LOCATION_URL`: The URL for BC government repositories. (https://api.github.com/user/bcgov/repos)
 
 #### Client Environment Variables
 For the frontend web application, set the following environment variable in a `.env` file for the client (located in the `client/` directory):
