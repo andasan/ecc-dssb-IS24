@@ -8,12 +8,6 @@ import routes from '@/api';
 import config from '@/config';
 
 export default ({ app, products }: { app: express.Application, products: IProduct[] }) => {
-    /**
-     * Health Check endpoints
-     */
-    app.get(path.join(config.api.prefix, 'status'), (req, res) => {
-        res.status(200).json({ status: 'OK' });
-    });
 
     // Enable Cross Origin Resource Sharing to front-end server
     const corsOptions = {

@@ -14,16 +14,25 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
     app.use('/products', productRoute);
 
     /**
-     * @swagger
-     * /products:
-     *   get:
-     *      summary: Get all products
-     *      tags: [Products]
-     *      responses:
-     *          '200':
-     *              description: A successful response
-     *          '400':
-     *              description: Bad request
+      * @swagger
+      * /products:
+      *   get:
+      *     summary: Get all products
+      *     tags: [Products]
+      *     responses:
+      *       "200":
+      *         description: A successful response
+      *         content:
+      *           application/json:
+      *             schema:
+      *               type: object
+      *               properties:
+      *                 products:
+      *                   type: array
+      *                   items:
+      *                     $ref: "#/components/schemas/Product"
+      *       "400":
+      *         description: Bad request
      */
     productRoute.get(
         '/',
@@ -50,10 +59,17 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
      *         schema:
      *           type: string
      *     responses:
-     *         '200':
-     *             description: A successful response
-     *         '400':
-     *             description: Bad request
+     *       "200":
+     *         description: A successful response
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 product:
+     *                   $ref: "#/components/schemas/Product"
+     *       "400":
+     *         description: Bad request
      */
     productRoute.get(
         '/:id',
@@ -82,40 +98,18 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
      *       content:
      *         application/json:
      *           schema:
-     *             type: object
-     *             properties:
-     *               product:
-     *                 type: object
-     *                 description: The product object to be created
-     *             example:
-     *               product:
-     *                 productName: "Hoge Product"
-     *                 productOwnerName: "Hoge"
-     *                 developers: [{id: 1, text: "str1"}, {id: 2, text: "str2"}]
-     *                 scrumMasterName: "Hoge"
-     *                 methodology: "Agile"
-     *                 location: https://hoge.com
+     *             $ref: "#/components/schemas/ProductRequestBody"
      *     responses:
-     *       '200':
+     *       "200":
      *         description: Product created successfully
      *         content:
      *           application/json:
      *             schema:
      *               type: object
      *               properties:
-     *                 newProduct:
-     *                   type: object
-     *                   description: The newly created product
-     *             example:
-     *               productId: 123
-     *               productName: "Hoge Product"
-     *               productOwnerName: "Hoge"
-     *               developers: ["str1", "str2"]
-     *               scrumMasterName: "Hoge"
-     *               startDate: "2023/10/10"
-     *               methodology: "Agile"
-     *               location: https://hoge.com.
-     *       '400':
+     *                 product:
+     *                   $ref: "#/components/schemas/Product"
+     *       "400":
      *         description: Bad request
      */
     productRoute.post(
@@ -151,39 +145,7 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
      *       content:
      *         application/json:
      *           schema:
-     *             type: object
-     *             properties:
-     *               productName:
-     *                 type: string
-     *                 description: The name of the product
-     *               productOwnerName:
-     *                 type: string
-     *                 description: The name of the product owner
-     *               developers:
-     *                 type: array
-     *                 items:
-     *                   type: object
-     *                   properties:
-     *                     id:
-     *                       type: string
-     *                     text:
-     *                       type: string
-     *               scrumMasterName:
-     *                 type: string
-     *                 description: The name of the scrum master
-     *               methodology:
-     *                 type: string
-     *                 description: The methodology of the product
-     *               location:
-     *                 type: string
-     *                 description: The location of the product
-     *             example:
-     *                 productName: "Hoge Product"
-     *                 productOwnerName: "Hoge"
-     *                 developers: [{id: 1, text: "str1"}, {id: 2, text: "str2"}]
-     *                 scrumMasterName: "Hoge"
-     *                 methodology: "Agile"
-     *                 location: https://hoge.com
+     *             $ref: "#/components/schemas/ProductRequestBody"
      *     responses:
      *       '200':
      *         description: Product updated successfully
@@ -193,18 +155,7 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
      *               type: object
      *               properties:
      *                 product:
-     *                   type: object
-     *                   description: The updated product
-     *             example:
-     *               product:
-     *                 productId: 0
-     *                 productName: "Hoge Product"
-     *                 productOwnerName: "Hoge"
-     *                 developers: ["str1", "str2"]
-     *                 scrumMasterName: "Hoge"
-     *                 startDate: "2023/10/10"
-     *                 methodology: "Agile"
-     *                 location: https://hoge.com.
+     *                   $ref: "#/components/schemas/Product"
      *       '404':
      *         description: Product not found
      *       '400':
@@ -275,5 +226,92 @@ export default (app: Router, { products }: { products: IProduct[] }) => {
             }
         },
     );
+
+
+    /**
+     * @swagger
+     * components:
+     *   schemas:
+     *     ProductRequestBody:
+     *       type: object
+     *       properties:
+     *          product:
+     *              type: object
+     *              properties:
+     *                  productName:
+     *                      type: string
+     *                      description: The name of the product
+     *                  productOwnerName:
+     *                      type: string
+     *                      description: The name of the product owner
+     *                  developers:
+     *                      type: array
+     *                      items:
+     *                          type: object
+     *                          properties:
+     *                              id:
+     *                                  type: string
+     *                              text:
+     *                                  type: string
+     *                  scrumMasterName:
+     *                      type: string
+     *                      description: The name of the scrum master
+     *                  methodology:
+     *                      type: string
+     *                      description: The methodology of the product
+     *                  location:
+     *                      type: string
+     *                      description: The location of the product
+     *       example:
+     *          product:
+     *              productName: "Hoge Product"
+     *              productOwnerName: "Hoge"
+     *              developers: [{ id: "1", text: "str1" }, { id: "2", text: "str2" }]
+     *              scrumMasterName: "Hoge"
+     *              methodology: "Agile"
+     *              location: https://hoge.com
+     *     Product:
+     *       type: object
+     *       properties:
+     *         productId:
+     *           type: number
+     *           description: ID of the product
+     *         productName:
+     *           type: string
+     *           description: The name of the product
+     *         productOwnerName:
+     *           type: string
+     *           description: The name of the product owner
+     *         developers:
+     *           type: array
+     *           items:
+     *             type: object
+     *             properties:
+     *               id:
+     *                 type: string
+     *               text:
+     *                 type: string
+     *         scrumMasterName:
+     *           type: string
+     *           description: The name of the scrum master
+     *         startDate:
+     *           type: string
+     *           description: The start date of the product
+     *         methodology:
+     *           type: string
+     *           description: The methodology of the product
+     *         location:
+     *           type: string
+     *           description: The location of the product
+     *       example:
+     *         productId: 0
+     *         productName: "Hoge Product"
+     *         productOwnerName: "Hoge"
+     *         developers: [{ id: "1", text: "str1" }, { id: "2", text: "str2" }]
+     *         scrumMasterName: "Hoge"
+     *         startDate: "2023/10/10"
+     *         methodology: "Agile"
+     *         location: https://hoge.com.
+     */
 
 };
