@@ -34,7 +34,7 @@ interface ProductFormProps {
     productId?: string
 }
 
-export function ProductForm({ data, editMode, productId }: ProductFormProps) { // Add productId parameter
+export function ProductForm({ data, editMode, productId }: ProductFormProps) {
     const createProductMutation = useCreateProduct();
     const updateProductMutation = useUpdateProduct();
 

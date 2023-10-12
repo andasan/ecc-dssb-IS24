@@ -1,4 +1,5 @@
 import express from 'express';
+import 'module-alias/register';
 
 import config from '@/config';
 

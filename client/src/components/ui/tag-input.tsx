@@ -116,7 +116,7 @@ export interface TagInputProps extends OmittedInputProps, VariantProps<typeof ta
     autocompleteFilter?: (option: string) => boolean;
 }
 
-const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props, ref) => {
+const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props, _ref) => {
 
     const {
         placeholder,
