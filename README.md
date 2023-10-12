@@ -149,8 +149,8 @@ Before running the backend API, make sure to set the following environment varia
 cp server/.env-sample server/.env
 ```
 
-- `PORT`: The port on which the server should listen.
-- `CLIENT_URL`: The URL of the frontend application.
+- `PORT`: The port on which the server should listen. (8080)
+- `CLIENT_URL`: The URL of the frontend application. (http://localhost:3000)
 - `LOCATION_URL`: The URL for BC government repositories. (https://api.github.com/user/bcgov/repos)
 
 #### Client Environment Variables
@@ -159,7 +159,7 @@ For the frontend web application, set the following environment variable in a `.
 cp client/.env-sample client/.env
 ```
 
-- `VITE_API_URL`: The backend API endpoint URL for making requests from the client.
+- `VITE_API_URL`: The backend API endpoint URL for making requests from the client. (/api)
 
 
 ### Using Docker
