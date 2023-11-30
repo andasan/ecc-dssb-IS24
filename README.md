@@ -1,6 +1,6 @@
 # Project Documentation: ECC Product Catalog
 
-This documentation provides a guide for building a web application for tracking and managing web applications developed by the Province of BC. The application is designed to fulfill the requirements mentioned in the "IS-24 Full Stack Developer Position" code challenge. It comprises a modern backend API, frontend web application, and bonus features like Swagger documentation.
+This documentation provides a guide for building a web application for tracking and managing web applications developed by the Province of BC. It comprises a modern backend API, frontend web application, and bonus features like Swagger documentation.
 
 ## Table of Contents
 1. [Introduction](#introduction)
